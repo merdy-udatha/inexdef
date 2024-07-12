@@ -11,3 +11,21 @@ ysp project
 7. Export to file as TSV
 8. Compress the file with gzip
 9. Rename the file from "mart-export.txt.gz" to genome/species_name.gz
+
+
+## Genomes ##
+
+Favorite model organisms
+
++ A.thaliana
++ C.elegans
++ D.melanogaster
+
+Other organisms
+
++ Chicken
++ Fish
++ Fungi of various kinds
++ Human
++ Mouse
+
