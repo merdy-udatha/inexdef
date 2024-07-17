@@ -2,22 +2,32 @@ import argparse
 import gzip
 import sys
 
+# open file
 filename = sys.argv[1]
 if filename.endswith('.gz'): fp = gzip.open(filename, 'rt')
 else:                        fp = open(filename)
-
-d = {}
-
 header = next(fp)
+
+# gather data into gene->tx->exons
+d = {}
 for line in fp:
 	gid, tid, chrom, beg, end = line.split()
 	if gid not in d: d[gid] = {}
 	if tid not in d[gid]: d[gid][tid] = []
 	d[gid][tid].append((int(beg), int(end)))
 
+# reorganize data
+# keep only the first transcript in the group
+# report the coordinates of exon1-intron-exon2
 for gid in d:
-	print(gid)
-	for tid in d[gid]:
-		exons = d[gid][tid]
-		if len(exons) == 1: continue # no intron
-		print(gid, tid, len(exons))
+	tid = list(d[gid].keys())[0]
+	exons = d[gid][tid]
+	if len(exons) == 1: continue # no intron
+	
+	for i in range(len(exons) -1):
+		e1b, e1e = exons[i]
+		e2b, e2e = exons[i+1]
+		ib = e1e+1
+		ie = e2b-1
+		print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
+	
