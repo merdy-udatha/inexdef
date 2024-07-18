@@ -38,11 +38,27 @@ for gid in d:
 		if (ib > ie): sys.exit('ERROR: negative strand length')
 print(intr_len)
 
+
+def rel_len(list): 
+	small = 100 
+	first_small = 0 
+	second_small = 0 
+	for i in list: 
+		if list[i] <= small: 
+			first_small += 1
+			if list[i+1] <= small: 
+				second_small += 1
+	return second_small/first_small
+		
+		
 def mean(list):
 	total_sum = 0 
 	for i in list: 
 		total_sum += list[i]
 	return total_sum/len(list)
+
 print()
 print(f'Mean of intron lengths: {mean(intr_len):.3f}')
 print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
+print()
+print(f'{rel_len(exon_len)}')
