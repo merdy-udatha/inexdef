@@ -19,6 +19,8 @@ for line in fp:
 # reorganize data
 # keep only the first transcript in the group
 # report the coordinates of exon1-intron-exon2
+exon_len = []
+intr_len = [] 
 for gid in d:
 	tid = list(d[gid].keys())[0]
 	exons = d[gid][tid]
@@ -29,5 +31,20 @@ for gid in d:
 		e2b, e2e = exons[i+1]
 		ib = e1e+1
 		ie = e2b-1
-		print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
-	
+		# print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
+		exon_len.append(e1e-e1b+1)
+		if e2e < e1b: 
+			intr_len.append(e1b-e2e+1)
+		else: 
+			intr_len.append(ie-ib+1)
+
+
+def mean(list):
+	total_sum = 0 
+	for i in list: 
+		total_sum += list[i]
+	return total_sum/len(list)
+print()
+print(f'Mean of intron lengths: {mean(intr_len):.3f}')
+print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
+
