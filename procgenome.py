@@ -23,6 +23,7 @@ for gid in d:
 	tid = list(d[gid].keys())[0]
 	exons = d[gid][tid]
 	if len(exons) == 1: continue # no intron
+	if exons[0][0] > exons[1][0]: exons = list(reversed(exons)) # neg strand
 	
 	for i in range(len(exons) -1):
 		e1b, e1e = exons[i]
@@ -30,4 +31,6 @@ for gid in d:
 		ib = e1e+1
 		ie = e2b-1
 		print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
+		if (ib > ie): sys.exit('ERROR: negative strand length')
+
 	
