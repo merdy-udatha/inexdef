@@ -13,17 +13,22 @@ d = {}
 for line in fp:
 	gid, tid, chrom, beg, end = line.split()
 	if gid not in d: d[gid] = {}
-	if tid not in d[gid]: d[gid][tid] = []
-	d[gid][tid].append((int(beg), int(end)))
+	if tid not in d[gid]: d[gid][tid] = {}
+	d[gid][tid][(int(beg), int(end))] = True
 
 # reorganize data
 # keep only the first transcript in the group
 # report the coordinates of exon1-intron-exon2
+"""
 exon_len = []
-intr_len = [] 
+intr_len = []
+"""
+
 for gid in d:
 	tid = list(d[gid].keys())[0]
-	exons = d[gid][tid]
+	exons = list(d[gid][tid].keys())
+	exons.sort(key=lambda tup: tup[0])
+	
 	if len(exons) == 1: continue # no intron
 	if exons[0][0] > exons[1][0]: exons = list(reversed(exons)) # neg strand
 	
@@ -32,6 +37,11 @@ for gid in d:
 		e2b, e2e = exons[i+1]
 		ib = e1e+1
 		ie = e2b-1
+		if (ib > ie): sys.exit('ERROR: negative strand length')			
+		print(f'{gid}\t{tid}\t{e1b}\t{e1e}\t{ib}\t{ie}\t{e2b}\t{e2e}')
+
+"""
+
 		exon_len.append(e1e-e1b+1)
 		if e2e < e1b: 
 			intr_len.append(e1b-e2e+1)
@@ -63,6 +73,16 @@ def rel_len(list):
 	return rel_list
 rel_len(exon_len)
 
+<<<<<<< HEAD
 print(mean(rel_list), len(rel_list))
 			
 			
+=======
+print()
+print(f'Mean of intron lengths: {mean(intr_len):.3f}')
+print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
+print()
+print(f'{rel_len(exon_len)}')
+
+"""
+>>>>>>> 9ef4013998014ccc7ccc1b6f9737493181f34417
