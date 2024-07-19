@@ -19,6 +19,11 @@ for line in fp:
 # reorganize data
 # keep only the first transcript in the group
 # report the coordinates of exon1-intron-exon2
+"""
+exon_len = []
+intr_len = []
+"""
+
 for gid in d:
 	tid = list(d[gid].keys())[0]
 	exons = list(d[gid][tid].keys())
@@ -34,3 +39,38 @@ for gid in d:
 		ie = e2b-1
 		if (ib > ie): sys.exit('ERROR: negative strand length')			
 		print(f'{gid}\t{tid}\t{e1b}\t{e1e}\t{ib}\t{ie}\t{e2b}\t{e2e}')
+
+"""
+
+		exon_len.append(e1e-e1b+1)
+		intr_len.append(ie-ib+1)
+		print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
+		if (ib > ie): sys.exit('ERROR: negative strand length')
+print(intr_len)
+
+
+def rel_len(list): 
+	small = 100 
+	first_small = 0 
+	second_small = 0 
+	for i in list: 
+		if list[i] <= small: 
+			first_small += 1
+			if list[i+1] <= small: 
+				second_small += 1
+	return second_small/first_small
+		
+		
+def mean(list):
+	total_sum = 0 
+	for i in list: 
+		total_sum += list[i]
+	return total_sum/len(list)
+
+print()
+print(f'Mean of intron lengths: {mean(intr_len):.3f}')
+print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
+print()
+print(f'{rel_len(exon_len)}')
+
+"""
