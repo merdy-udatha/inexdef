@@ -25,12 +25,13 @@ dataset = {
 for name, data in dataset.items():
 
 	# Plotting a basic histogram
-	plt.hist(data, bins=10000, color='skyblue', edgecolor='black')
+	plt.hist(data, bins=100, color='skyblue', edgecolor='black')
 	
 	# Adding labels and title
 	plt.xlabel(f'{name} length (bp)')
 	plt.ylabel('Frequency')
 	plt.title(f'{name} Length in {genome}')
-	
+
 	# Display the plot
-	plt.savefig(f'graphs/{genome}:{name}.pdf')
+	plt.show()
+	# plt.savefig(f'graphs/{genome}:{name}.pdf')
