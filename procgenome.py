@@ -33,32 +33,36 @@ for gid in d:
 		ib = e1e+1
 		ie = e2b-1
 		exon_len.append(e1e-e1b+1)
-		intr_len.append(ie-ib+1)
-		print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
-		if (ib > ie): sys.exit('ERROR: negative strand length')
+		if e2e < e1b: 
+			intr_len.append(e1b-e2e+1)
+		else: 
+			intr_len.append(ie-ib+1)
+		if (ib > ie): 
+			print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
+			# sys.exit('ERROR: negative strand length')
+
 print(intr_len)
 
+def mean(list): 
+	total = 0
+	for v in list: 
+		total += list[v]
+	return total/len(list)
 
-def rel_len(list): 
+
+print(mean(intr_len), len(intr_len))
+print(mean(exon_len), len(exon_len))
+
+
+rel_list = []
+def rel_len(list):
 	small = 100 
-	first_small = 0 
-	second_small = 0 
-	for i in list: 
-		if list[i] <= small: 
-			first_small += 1
-			if list[i+1] <= small: 
-				second_small += 1
-	return second_small/first_small
-		
-		
-def mean(list):
-	total_sum = 0 
-	for i in list: 
-		total_sum += list[i]
-	return total_sum/len(list)
+	for i in list:
+		if i <= small: 
+			rel_list.append(list[i+1])
+	return rel_list
+rel_len(exon_len)
 
-print()
-print(f'Mean of intron lengths: {mean(intr_len):.3f}')
-print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
-print()
-print(f'{rel_len(exon_len)}')
+print(mean(rel_list), len(rel_list))
+			
+			

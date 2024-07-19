@@ -48,19 +48,26 @@ print()
 print(f'Mean of intron lengths: {mean(intr_len):.3f}')
 print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
 	
+
+
 import matplotlib.pyplot as plt
 import numpy as np
-
-# Generate random data for the histogram
-data = intr_len
-
-# Plotting a basic histogram
-plt.hist(data, bins=10000, color='skyblue', edgecolor='black')
-
+ 
+# Generate random data for stacked histograms
+data1 = intr_len
+data2 = exon_len
+ 
+# Creating a stacked histogram
+plt.hist([data1, data2], bins=10000, stacked=True, color=['cyan', 'Purple'], edgecolor='black')
+ 
 # Adding labels and title
-plt.xlabel('Intron length (bp)')
+plt.xlabel('Values')
 plt.ylabel('Frequency')
-plt.title('Intron Length in A.thaliana')
-
+plt.title(f'Stacked Histogram - {filename}')
+ 
+# Adding legend
+plt.legend(['Intron Length (bp)', 'Exon Length (bp)'])
+ 
 # Display the plot
 plt.show()
+
