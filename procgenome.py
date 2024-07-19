@@ -85,4 +85,3 @@ print()
 print(f'{rel_len(exon_len)}')
 
 """
->>>>>>> 9ef4013998014ccc7ccc1b6f9737493181f34417
