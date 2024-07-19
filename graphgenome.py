@@ -2,65 +2,38 @@ import argparse
 import gzip
 import sys
 
-# open file
-filename = sys.argv[1]
-if filename.endswith('.gz'): fp = gzip.open(filename, 'rt')
-else:                        fp = open(filename)
-header = next(fp)
-
-# gather data into gene->tx->exons
-d = {}
-for line in fp:
-	gid, tid, chrom, beg, end = line.split()
-	if gid not in d: d[gid] = {}
-	if tid not in d[gid]: d[gid][tid] = []
-	d[gid][tid].append((int(beg), int(end)))
-
-# reorganize data
-# keep only the first transcript in the group
-# report the coordinates of exon1-intron-exon2
-exon_len = []
-intr_len = [] 
-for gid in d:
-	tid = list(d[gid].keys())[0]
-	exons = d[gid][tid]
-	if len(exons) == 1: continue # no intron
-	
-	for i in range(len(exons) -1):
-		e1b, e1e = exons[i]
-		e2b, e2e = exons[i+1]
-		ib = e1e+1
-		ie = e2b-1
-		# print(gid, tid, e1b, e1e, ib, ie, e2b, e2e)
-		exon_len.append(e1e-e1b+1)
-		if e2e < e1b: 
-			intr_len.append(e1b-e2e+1)
-		else: 
-			intr_len.append(ie-ib+1)
-
-
-def mean(list):
-	total_sum = 0 
-	for i in list: 
-		total_sum += list[i]
-	return total_sum/len(list)
-print()
-print(f'Mean of intron lengths: {mean(intr_len):.3f}')
-print(f'Mean of exon lengths:   {mean(exon_len):.3f}')
-	
 import matplotlib.pyplot as plt
 import numpy as np
+import sys
 
-# Generate random data for the histogram
-data = intr_len
+# expects filepath and genome as sys.argv[1] and sys.argv[2]
+genome = sys.argv[2]
 
-# Plotting a basic histogram
-plt.hist(data, bins=10000, color='skyblue', edgecolor='black')
+e1lens = []
+e2lens = []
+ilens = []
+with open(sys.argv[1]) as fp:
+	for line in fp:
+		gid, tid, e1b, e1e, ib, ie, e2b, e2e = line.split()
+		e1lens.append(int(e1e) - int(e1b) + 1)
+		e2lens.append(int(e2e) - int(e2b) + 1)
+		ilens.append(int(ie) - int(ib) + 1)
+	
+dataset = {
+	'Exon1': e1lens,
+	'Exon2': e2lens,
+	'Intron': ilens,
+}
 
-# Adding labels and title
-plt.xlabel('Intron length (bp)')
-plt.ylabel('Frequency')
-plt.title('Intron Length in A.thaliana')
+for name, data in dataset.items():
 
-# Display the plot
-plt.show()
+	# Plotting a basic histogram
+	plt.hist(data, bins=10000, color='skyblue', edgecolor='black')
+	
+	# Adding labels and title
+	plt.xlabel(f'{name} length (bp)')
+	plt.ylabel('Frequency')
+	plt.title(f'{name} Length in {genome}')
+	
+	# Display the plot
+	plt.savefig(f'graphs/{genome}:{name}.pdf')
