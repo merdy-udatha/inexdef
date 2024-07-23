@@ -6,6 +6,7 @@ def kmers(path, k):
 	total = 0
 	with open(path) as fp:
 		for seq in fp:
+			if seq.startswith('>'): continue
 			seq = seq.upper()
 			for i in range(len(seq) - k):
 				kmer = seq[i:i+k]
@@ -30,4 +31,5 @@ k1s = kmers(arg.file1, arg.kmer)
 k2s = kmers(arg.file2, arg.kmer)
 
 for kmer in k1s:
+	if kmer not in k2s: continue
 	print(kmer, math.log2(k1s[kmer]/k2s[kmer]))
