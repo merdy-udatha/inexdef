@@ -33,5 +33,4 @@ for name, data in dataset.items():
 	plt.title(f'{name} Length in {genome}')
 
 	# Display the plot
-	plt.show()
-	# plt.savefig(f'graphs/{genome}:{name}.pdf')
+	plt.savefig(f'graphs/{genome}:{name}.pdf')
