@@ -1,7 +1,10 @@
+<<<<<<< HEAD
 import argparse
 import gzip
 import statistics
 import sys
+=======
+>>>>>>> 6915dc74d877c331249f7f1c209171b0fe223dc6
 
 import matplotlib.pyplot as plt
 import numpy as np
@@ -54,7 +57,7 @@ for e1, e2, il in zip(e1lens, e2lens, ilens):
 for name, data in dataset.items():
 
 	# Plotting a basic histogram
-	plt.hist(data, bins=10000, color='skyblue', edgecolor='black')
+	plt.hist(data, bins=100, color='skyblue', edgecolor='black')
 	
 	# Adding labels and title
 	plt.xlabel(f'{name} length (bp)')
@@ -63,3 +66,5 @@ for name, data in dataset.items():
 	
 	# Display the plot
 	plt.savefig(f'graphs/{arg.genome}:{name}.pdf')
+
+	
