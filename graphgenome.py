@@ -1,14 +1,9 @@
-<<<<<<< HEAD
 import argparse
 import gzip
 import statistics
 import sys
-=======
->>>>>>> 6915dc74d877c331249f7f1c209171b0fe223dc6
-
 import matplotlib.pyplot as plt
 import numpy as np
-import sys
 
 parser = argparse.ArgumentParser(description='Graphing program')
 parser.add_argument('triples', help='triples file')
@@ -65,10 +60,7 @@ for name, data in dataset.items():
 	plt.title(f'{name} Length in {arg.genome}')
 	
 	# Display the plot
-<<<<<<< HEAD
-	plt.savefig(f'graphs/{genome}:{name}.pdf')
-=======
+
 	plt.savefig(f'graphs/{arg.genome}:{name}.pdf')
 
 	
->>>>>>> 615055e38e33bc008224259b7f5d2cd322347236
