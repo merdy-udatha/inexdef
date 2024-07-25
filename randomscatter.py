@@ -48,18 +48,8 @@ for e1, e2, il in zip(e1lens, e2lens, ilens):
 	dataset['Exon2'].append(e2)
 	dataset['Intron'].append(il)
 
-		
-set1 = {}
-set2 = {}	
-while len(set1.keys()) <  len(dataset['Intron']):
-	s1 = random.choice(dataset['Intron'])
-	s2 = random.choice(dataset['Exon1'])
-	if s1 in set1: continue
-	if s2 in set2: continue
-	set1[s1] = True
-	set2[s2] = True
-	x = s1 
-	y = s2
+for x in dataset['Intron']:
+	y = random.choice(dataset['Exon1'])
 	plt.scatter(x, y, s=1, color = 'black')
 
 
