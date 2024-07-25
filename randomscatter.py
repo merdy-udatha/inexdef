@@ -10,6 +10,7 @@ import random
 parser = argparse.ArgumentParser(description='Graphing program')
 parser.add_argument('triples', help='triples file')
 parser.add_argument('genome', help='name of genome')
+parser.add_argument('png', help='path to output filename including .png')
 parser.add_argument('--cutoff', type=float, default=30,
 	help='z-score cutoff [%(default)f]')
 arg = parser.parse_args()
@@ -48,36 +49,11 @@ for e1, e2, il in zip(e1lens, e2lens, ilens):
 	dataset['Exon2'].append(e2)
 	dataset['Intron'].append(il)
 
-for x in dataset['Intron']:
-	y = random.choice(dataset['Exon1'])
-	plt.scatter(x, y, s=1, color = 'black')
-
-
-"""
-x = np.array(dataset['Intron'])
-y = np.array(dataset['Exon2'])
-plt.scatter(x, y, s=1, color = 'blue')
-"""
+ys = []
+for _ in range(len(dataset['Intron'])):
+	ys.append( random.choice(dataset['Exon1']))
+plt.scatter(dataset['Intron'], ys, s=1, color = 'black')
 plt.xlabel("Intron Length (bp)")
 plt.ylabel("Exon Length (bp)")
 plt.title(f'{arg.genome}', fontsize = 18)
-
-# plt.show()
-# Display the plot
-plt.savefig(f'graphs/scatter_plots/randomdict/{arg.genome}_scatterplt.png')
-
-"""
-
-randintron = []
-randexon = []
-for i in range(len(dataset['Intron'])):  
-		ri = random.choice(dataset['Intron'])
-		re = random.choice(dataset['Exon1'])
-		if ri not in randintron: 
-			randintron.append(random.choice(dataset['Intron']))
-			x = ri
-		if re not in randexon: 
-			randexon.append(random.choice(dataset['Exon1']))
-			y = re 
-		else: continue 
-"""
+plt.savefig(arg.png)
