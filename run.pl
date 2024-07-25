@@ -10,5 +10,9 @@ foreach my $file (@file) {
 	} else {
 		print STDERR "$out already exists, skipping\n";
 	}
-	system("python3 graphgenome.py $out $name") == 0 or die;
+	my $outfile = "graphs/scatter_plots/randomdict/$name\_scatterplt.png";
+	if (-s $outfile < 100) {
+		system("python3 randomscatter.py $out $name") == 0 or die;
+	}
 }
+	
